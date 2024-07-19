@@ -17,6 +17,14 @@
                 {"name": "QT_DEBUG_PLUGINS", "value": "0"},
                 {"name": "GL_DEBUG_OUTPUT", "value": "0"}
             ]
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "(LLDB) Launch",
+            "program": "${workspaceFolder}/build/in-formant",
+            "args": [],
+            "cwd": "${workspaceFolder}",
         }
     ]
 }
