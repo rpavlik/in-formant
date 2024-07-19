@@ -6,6 +6,7 @@
 #include <QQmlContext>
 #include <iostream>
 #include <chrono>
+#include <stdexcept>
 
 using namespace Main;
 using namespace std::chrono_literals;
@@ -61,8 +62,12 @@ GuiContext::GuiContext(Config *config, RenderContext *renderContext, DataVisWrap
     mQmlEngine->rootContext()->setContextProperty("dataVis", dataVisWrapper);
 
     mQmlEngine->load(QUrl("qrc:/MainWindow.qml"));
-   
-    auto window = static_cast<QQuickWindow *>(mQmlEngine->rootObjects().first());
+
+    auto root = mQmlEngine->rootObjects();
+    if (root.empty()) {
+        throw std::runtime_error("Could not create QML main window, probably missing qml6-module-*");
+    }
+    auto window = static_cast<QQuickWindow *>(root.first());
     auto canvasItem = window->findChild<Gui::CanvasItem *>("IfCanvas");
 
     canvasItem->setRenderContext(mRenderContext);
